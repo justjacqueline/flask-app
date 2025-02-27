@@ -1,23 +1,62 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>RSVP Details</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>RSVP Results</title>
+  </head>
+  <body>
     {% if error %}
-        <h3 style="color: red;">{{ error }}</h3>
+      <!-- If there's an error, show it -->
+      <h2 style="color: red;">{{ error }}</h2>
+      <button onclick="window.history.back()">Go Back</button> <!-- Back Button -->
     {% else %}
-        <h2>RSVP Details</h2>
-        <table border="1">
-            {% for key, value in data.items() %}
-                <tr>
-                    <th>{{ key }}</th>
-                    <td>{{ value }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+      <!-- Otherwise, show user data & event details -->
+      <h2>2025 Spring Symposium & related events for {{ user.get('Name', '') }}</h2>
+      <p>
+        <strong>Affiliation:</strong> {{ user.get('Affiliation', '') }} <br/>
+        <strong>Email:</strong> {{ user.get('email', '') }} <br/>
+        <!-- Add any other user fields you'd like, e.g. "Position", etc. -->
+      </p>
+
+      <hr/>
+
+      <h3>Event Details</h3>
+      <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Event Name</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>RSVP</th>
+            <th>Link</th> <!-- Added Link Column -->
+          </tr>
+        </thead>
+        <tbody>
+          {% for event_name, details in events.items() %}
+          <tr>
+            <td>{{ event_name }}</td>
+            <td>{{ details.Date }}</td>
+            <td>{{ details.Time }}</td>
+            <td>{{ details.Location }}</td>
+            <td>{{ details.RSVP }}</td>
+            <td>
+                {% if details.Link %}
+                  {% if details.Link.startswith("http") %}
+                    <a href="{{ details.Link }}" target="_blank">{{ details.Link }}</a>
+                  {% else %}
+                    <a href="https://{{ details.Link }}" target="_blank">{{ details.Link }}</a>
+                  {% endif %}
+                {% else %}
+                  <!-- Keep blank if there's no link -->
+                {% endif %}
+              </td>
+              
+              
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     {% endif %}
-    <br>
-    <a href="/">Search again</a>
-</body>
+  </body>
 </html>
