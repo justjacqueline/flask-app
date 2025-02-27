@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RSVP Details</title>
+</head>
+<body>
+    {% if error %}
+        <h3 style="color: red;">{{ error }}</h3>
+    {% else %}
+        <h2>RSVP Details</h2>
+        <table border="1">
+            {% for key, value in data.items() %}
+                <tr>
+                    <th>{{ key }}</th>
+                    <td>{{ value }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <br>
+    <a href="/">Search again</a>
+</body>
+</html>
