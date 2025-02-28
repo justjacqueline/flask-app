@@ -32,6 +32,12 @@ def load_google_sheets():
     # 4) User data starts at row 5 (1-based) → Row 4 (0-based)
     df_data = df_full.iloc[4:].reset_index(drop=True)  # FIXED: Correct user row start
 
+    # Preprocess email addresses
+    # need to check if emails are there... some empty rows may cause problems with splitting
+    # Also set all to lower to prevent case sensitivity
+    df_data['email'] = df_data['email'].apply(lambda x: ';'.join([e.strip().lower() for e in x.split(';')]) if isinstance(x, str) else x)
+
+
     # Debug: Print user data DataFrame
     print("\n🔹 USER DATA (First 5 Rows):")
     print(df_data.head())
@@ -60,7 +66,7 @@ def home():
     On POST: find user data by email, merge with event metadata, and render result.html.
     """
     if request.method == "POST":
-        email = request.form.get("email", "").strip()
+        email = request.form.get("email", "").strip().lower() # set to lower to prevent case sensitivity
         if not email:
             return render_template("result.html", error="No email provided.")
 
@@ -73,7 +79,8 @@ def home():
             return f"Column 'email' not found in CSV. Available columns: {df.columns.tolist()}"
 
         # Filter for user’s record
-        user_data = df[df["email"] == email]
+        # check for string type to avoid errors
+        user_data = df[df["email"].apply(lambda x: any(e.strip() == email for e in x.split(';')) if isinstance(x, str) else False)]
 
         # Debug: Print filtered user data
         print(f"\n🔹 USER DATA FOR EMAIL {email}:")
