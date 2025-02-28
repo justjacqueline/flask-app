@@ -79,16 +79,14 @@
                     <td>{{ details.Location }}</td>
                     <td>{{ details.RSVP }}</td>
                     <td>
-                        {% if details.Link %}
-                            {% if details.Link.startswith("http") %}
-                                <a href="{{ details.Link }}" target="_blank">Open</a>
-                            {% else %}
-                                <a href="https://{{ details.Link }}" target="_blank">Open</a>
+                      {% if details.Link %}
+                          <a href="{{ details.Link.startswith('http') and details.Link or 'https://' + details.Link }}" target="_blank">
+                              {{ 'Zoom Link' if 'zoom' in details.Link else 'Link' }}
+                          </a>
+                      {% else %}
+                            <!-- Display an empty string instead of N/A -->
                             {% endif %}
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </td>
+                  </td>
                 </tr>
                 {% endfor %}
             </tbody>
