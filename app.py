@@ -131,18 +131,7 @@ def home():
                 error=None
             )
     else:
-        return """
-        <html>
-        <body>
-          <h1>Search by Email</h1>
-          <form method="POST">
-            <label for="email">Enter your email:</label><br><br>
-            <input type="text" name="email" placeholder="your@email.com"/>
-            <button type="submit">Search</button>
-          </form>
-        </body>
-        </html>
-        """
+        return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
