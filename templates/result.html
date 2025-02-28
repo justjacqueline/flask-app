@@ -1,62 +1,98 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
     <title>RSVP Results</title>
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f4f4f9;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
     {% if error %}
-      <!-- If there's an error, show it -->
-      <h2 style="color: red;">{{ error }}</h2>
-      <button onclick="window.history.back()">Go Back</button> <!-- Back Button -->
+        <h2 style="color: red;">{{ error }}</h2>
+        <button onclick="window.history.back()">Go Back</button>
     {% else %}
-      <!-- Otherwise, show user data & event details -->
-      <h2>2025 Spring Symposium & related events for {{ user.get('Name', '') }}</h2>
-      <p>
-        <strong>Affiliation:</strong> {{ user.get('Affiliation', '') }} <br/>
-        <strong>Email:</strong> {{ user.get('email', '') }} <br/>
-        <!-- Add any other user fields you'd like, e.g. "Position", etc. -->
-      </p>
-
-      <hr/>
-
-      <h3>Event Details</h3>
-      <table border="1" cellpadding="6" cellspacing="0">
-        <thead>
-          <tr>
-            <th>Event Name</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Location</th>
-            <th>RSVP</th>
-            <th>Link</th> <!-- Added Link Column -->
-          </tr>
-        </thead>
-        <tbody>
-          {% for event_name, details in events.items() %}
-          <tr>
-            <td>{{ event_name }}</td>
-            <td>{{ details.Date }}</td>
-            <td>{{ details.Time }}</td>
-            <td>{{ details.Location }}</td>
-            <td>{{ details.RSVP }}</td>
-            <td>
-                {% if details.Link %}
-                  {% if details.Link.startswith("http") %}
-                    <a href="{{ details.Link }}" target="_blank">{{ details.Link }}</a>
-                  {% else %}
-                    <a href="https://{{ details.Link }}" target="_blank">{{ details.Link }}</a>
-                  {% endif %}
-                {% else %}
-                  <!-- Keep blank if there's no link -->
-                {% endif %}
-              </td>
-              
-              
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <h2>2025 Spring Symposium & related events for {{ user.get('Name', '') }}</h2>
+        <p>
+            <strong>Affiliation:</strong> {{ user.get('Affiliation', '') }} <br/>
+            <strong>Email:</strong> {{ user.get('email', '') }} <br/>
+        </p>
+        <hr/>
+        <h3>Event Details</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Event Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>RSVP</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event_name, details in events.items() %}
+                <tr>
+                    <td>{{ event_name }}</td>
+                    <td>{{ details.Date }}</td>
+                    <td>{{ details.Time }}</td>
+                    <td>{{ details.Location }}</td>
+                    <td>{{ details.RSVP }}</td>
+                    <td>
+                        {% if details.Link %}
+                            {% if details.Link.startswith("http") %}
+                                <a href="{{ details.Link }}" target="_blank">Open</a>
+                            {% else %}
+                                <a href="https://{{ details.Link }}" target="_blank">Open</a>
+                            {% endif %}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
-  </body>
+</body>
 </html>
