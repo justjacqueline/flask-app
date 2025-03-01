@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, render_template
 import pandas as pd
 
@@ -133,5 +135,9 @@ def home():
     else:
         return render_template("index.html")
 
+#if __name__ == "__main__":
+#    app.run(host="0.0.0.0", port=5000, debug=True)
+# This was causing bad gateway 500 error on render.com
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 10000))  # Default to 10000, but use Render's $PORT if available
+    app.run(host="0.0.0.0", port=port)
